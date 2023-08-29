@@ -65,9 +65,9 @@
 !
        USE module_NEMS_Rusage,ONLY: NEMS_Rusage
 !
-#ifdef FRONT_FVCOM
-       USE mod_driver,  ONLY: syear, smonth,sday, shour, sminute, ssecond
-#endif 
+!PV-DEL#ifdef FRONT_FVCOM
+!PV-DEL       USE mod_driver,  ONLY: syear, smonth,sday, shour, sminute, ssecond
+!PV-DEL#endif 
 !
 !-----------------------------------------------------------------------
 !
@@ -414,14 +414,14 @@
       ESMF_ERR_ABORT(RC)
 ! ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 !
-#ifdef FRONT_FVCOM
-     SYEAR   = YY
-     SMONTH  = MM
-     SDAY    = DD
-     SHOUR   = HH
-     SMINUTE = MNS
-     SSECOND = SEC
-#endif
+!PV-DEL#ifdef FRONT_FVCOM
+!PV-DEL     SYEAR   = YY
+!PV-DEL     SMONTH  = MM
+!PV-DEL     SDAY    = DD
+!PV-DEL     SHOUR   = HH
+!PV-DEL     SMINUTE = MNS
+!PV-DEL     SSECOND = SEC
+!PV-DEL#endif
 !
 !-----------------------------------------------------------------------
 !***  Now the Main Clock can be created.
