@@ -17,6 +17,20 @@ SCHISM_BINDIR?=$(ROOTDIR)/SCHISM_INSTALL
 export SCHISM_BUILD_DIR:=$(SCHISM_BDLDIR)
 export SCHISM_NO_PARMETIS:=OFF
 
+export SCHISM_NO_PARMETIS:=OFF
+
+ifeq ($(strip $(NO_PARMETIS)),)
+  SCHISM_NO_PARMETIS:=OFF
+else
+  SCHISM_NO_PARMETIS:=ON
+endif
+
+ifneq ($(strip $(USE_PAHM)),)
+  SCHISM_USE_PAHM:=OFF
+else
+  SCHISM_USE_PAHM:=ON
+endif
+
 # SCHISM needs the compilers for C, Fortran and CXX, the latter ones
 # are defined in ESMFMKFILE, the former is computed here (@todo test), by
 # trying mpicxx, mpiicpc and mpicpc as CXXCOMPILER
@@ -53,10 +67,13 @@ $(schism_mk): configure $(CONFDIR)/configure.nems
 	+$(MODULE_LOGIC); echo "SCHISM_SRCDIR = $(SCHISM_SRCDIR)"; exec cmake -S $(SCHISM_SRCDIR) -B $(SCHISM_BLDDIR) \
 	   -DCMAKE_VERBOSE_MAKEFILE=TRUE -DCMAKE_Fortran_COMPILER=$(ESMF_F90COMPILER) \
 	   -DCMAKE_CXX_COMPILER=$(ESMF_CXXCOMPILER) -DCMAKE_C_COMPILER=$(ESMF_CCOMPILER) \
-	   -DOLDIO=ON -DUSE_WW3=ON -DPREC_EVAP=OFF -DUSE_PAHM=ON -DNO_PARMETIS=$(SCHISM_NO_PARMETIS)
+	   -DOLDIO=ON -DUSE_WW3=ON -DPREC_EVAP=OFF -DUSE_PAHM=$(SCHISM_USE_PAHM) -DNO_PARMETIS=$(SCHISM_NO_PARMETIS)
 
   ### Compile the SCHISM components
 	+cd $(SCHISM_BLDDIR); exec $(MAKE) pschism
+
+  ### Compile the SCHISM utilities
+	+cd $(SCHISM_BLDDIR); exec $(MAKE) utility
 
 	### Compile the SCHISM cap, this uses the SCHISM_BUILD_DIR and SCHISM_NO_PARMETIS exported variables
 	make -C  $(SCHISM_ROOTDIR)/schism-esmf DESTDIR=$(SCHISM_BINDIR) \
